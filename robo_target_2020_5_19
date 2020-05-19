@@ -1,0 +1,82 @@
+/*
+///////////////// Steps /////////////////
+
+Start:
+Play: "Give me a grid."
+Increment TargetText
+Play: TargetText SFX
+TargetGrid moves from upper right corner to center
+
+Loop:
+Move Target position
+Play: "Target." 
+Move TargetGrid to Target & Decrement TargetRect size
+Flash Target green
+
+///////////////// SFX /////////////////
+
+SFX:
+- "Give me a grid."
+- "Target."
+- "Now follow".
+- TargetText 
+- TargetAcquired
+
+///////////////// Progress Log /////////////////
+- Rect and lines drawn to screen.
+- Targeting text added
+
+- Rect and lines move from width & height to origin (0,0)
+- Targeting font updated.
+*/
+
+function RoboTarget(){
+	this.name = "robotarget";
+
+    var boxX = width;
+    var boxY = width;
+    
+	this.draw = function(){
+		push();
+
+        ///////////////// Target Reticle ///////////////// 
+        
+        noFill();
+        strokeWeight(2);
+        stroke(0, 255, 0);
+        
+        // Rectangle
+        rect(100,100,boxX,boxY);
+        
+        // Horizontal Line
+        line(0, boxY/2 + 100, width, boxY/2 + 100);
+        // Vertical Line
+        line(boxX/2 + 100, 0, boxX/2 + 100, height);
+        
+        if(frameCount % 2 == 0){
+            if(boxX <= 0 || boxY <= 0){
+                boxX = width;
+                boxY = width;
+            }else{
+                boxX -= 10;
+                boxY -= 10;
+            }
+        }
+
+        ///////////////// Targeting Text ///////////////// 
+        
+        fill(0,255,0);
+        textFont(roboFont);
+        textSize(30);
+        text('TARGETING', 50 , height - 50);
+
+        // Flicker
+        if(frameCount % 10 == 0){
+            text('_', textWidth('TARGETING') + 55, height - 50);
+        }
+        noFill();
+        
+        
+		pop();
+	};
+}
