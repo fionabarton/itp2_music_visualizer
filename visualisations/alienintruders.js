@@ -27,10 +27,12 @@ function AlienIntruders(){
     // decrement this value to increase the interval at which the fleet moves horizontally
     let intruderFleetSpeed = 50; 
     
+    let intruderAmount;
+    
     // game state... TO BE IMPLEMENTED!
     const GAME_STATES = ["gameplay", "respawn", "win", "lose", "titleScreen"];
     let gameState = GAME_STATES[0];
-    
+ 
     //////////////// Star Constructor ////////////////
     
     function Star (x, y){
@@ -40,6 +42,27 @@ function AlienIntruders(){
         this.height = random(1, 4);
         this.speed = random(2, 5);
         this.color = [255, 255, 255, random(150, 255)]; 
+        
+        this.update = function(){
+            // reset position if offscreen
+            if(this.yPos >= height){
+                this.xPos = random(0, width)
+                this.yPos = 0;
+            }
+            
+            // increase Y position (by speed * treble) towards bottom of the screen
+            this.yPos += this.speed * min(2, t);
+        }
+        
+        this.draw = function(){
+            // draw star, size affected by treble 
+            fill(this.color);
+            rect(this.xPos - t, 
+                 this.yPos - t, 
+                 this.width + t, 
+                 this.height + t);
+            noFill();
+        }
     } 
     
     // initialize array of stars & randomly set their position on the canvas
@@ -60,6 +83,19 @@ function AlienIntruders(){
         this.color = [255,0,0];
         this.active = true;
         this.points = 10;
+        
+        this.draw = function(){
+            if(this.active){
+                // draw intruder, size affected by bass 
+                fill(this.color);
+                rect(this.xPos * width/10 - b * 2,
+                     this.yPos * height/15 - b * 2,   
+                     this.width + b * 2, 
+                     this.height + b * 2); 
+
+                noFill();
+            }
+        }
     }
     
     // initialize array of invaders and position them on the canvas
@@ -69,6 +105,8 @@ function AlienIntruders(){
             intruders.push(new Intruder(i, j));
         }
     }
+    // track amount of intruders still active
+    intruderAmount = intruders.length;
 
     //////////////// Bullet Constructor ////////////////
     
@@ -96,6 +134,9 @@ function AlienIntruders(){
                             intruders[i].active = false;
                             // deactivate bullet 
                             this.active = false;
+                            
+                            intruderAmount -= 1;
+                            
                             // increment score
                             score += intruders[i].points;
                             //set high score
@@ -114,14 +155,51 @@ function AlienIntruders(){
                     this.active = false;
                     // decrement lives
                     lives -= 1;
+                    
+                    // game over
+                    if(lives <= 0){
+                        this.initializeGame(true);
+                    }
                 }
             }
         } 
+        
+        this.update = function(){
+            // change Y position (by speed * high mid)
+            if(this.isPlayerBullet){
+                this.yPos -= this.speed * min(1, h);
+            }else{
+                this.yPos += this.speed * min(1, h);
+            }
+
+            if(this.active){
+                // detect collison w/ player & intruders
+                this.onCollision();
+            }
+
+            // remove bullet from array if offscreen
+            if(this.yPos <= 0 || this.yPos >= height){
+                bullets.splice(this, 1);
+            }
+        }
+        
+        this.draw = function(){
+            if(this.active){
+                // draw bullet, size affected by bass  
+                fill(this.color);
+                rect(this.xPos - min(7.5, b * 2), 
+                     this.yPos - b * 3, 
+                     this.width + min(7.5, b * 2), 
+                     this.height + b * 3);
+                noFill();
+            }
+        }
     }
     
     // array to hold player & enemy bullets 
     let bullets = [];
     
+    ////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////
 	this.draw = function(){
 		push();
@@ -142,56 +220,15 @@ function AlienIntruders(){
         //////////////// Draw Stars ////////////////
         
         for(let i = 0; i < stars.length; i++){
-            // reset position if offscreen
-            if(stars[i].yPos >= height){
-                stars[i].xPos = random(0, width)
-                stars[i].yPos = 0;
-            }
-            
-            // increase Y position (by speed * treble) towards bottom of the screen
-            stars[i].yPos += stars[i].speed * min(2, t);
-            
-            // draw stars, size affected by treble 
-            fill(stars[i].color);
-            rect(stars[i].xPos - t, 
-                 stars[i].yPos - t, 
-                 stars[i].width + t, 
-                 stars[i].height + t);
-            noFill();
+            stars[i].update();
+            stars[i].draw();
         }
         
         //////////////// Draw Bullets ////////////////
+        
         for(let i = 0; i < bullets.length; i++){
-            
-            // change Y position (by speed * high mid)
-            if(bullets[i].isPlayerBullet){
-                bullets[i].yPos -= bullets[i].speed * min(1, h);
-            }else{
-                bullets[i].yPos += bullets[i].speed * min(1, h);
-            }
-
-            if(bullets[i].active){
-                // draw bullets, size affected by bass  
-                fill(bullets[i].color);
-                rect(bullets[i].xPos - min(7.5, b * 2), 
-                     bullets[i].yPos - b * 3, 
-                     bullets[i].width + min(7.5, b * 2), 
-                     bullets[i].height + b * 3);
-                noFill();
-
-                // detect collison w/ player & intruders
-                bullets[i].onCollision();
-
-                // game over
-                if(lives <= 0){
-                    this.initializeGame(true);
-                }
-            }
-
-            // remove bullet from array if offscreen
-            if(bullets[i].yPos <= 0 || bullets[i].yPos >= height){
-                bullets.splice(i, 1);
-            }
+            bullets[i].update();
+            bullets[i].draw();
         }
         
         //////////////// Instantiate Enemy Bullets ////////////////
@@ -209,26 +246,16 @@ function AlienIntruders(){
         
         //////////////// Draw Intruders ////////////////
 
-        let activeCount = 0;
-        
         for(let i = 0; i < intruders.length; i++){
-            if(intruders[i].active){
-                // draw intruders, size affected by bass 
-                fill(intruders[i].color);
-                rect(intruders[i].xPos * width/10 - b * 2,
-                     intruders[i].yPos * height/15 - b * 2,   
-                     intruders[i].width + b * 2, 
-                     intruders[i].height + b * 2); 
-
-                noFill();
-                
-                activeCount += 1;
-            }
+            intruders[i].draw();
         }
         
-        if(activeCount <= 0){
+        // update intruders
+        if(intruderAmount <= 0){
             this.initializeGame(false);
         }
+        
+        this.moveIntruders();
         
         //////////////// Draw Player Ship ////////////////
         
@@ -249,9 +276,9 @@ function AlienIntruders(){
         text("Hi-Score: " + highScore, width/10 * 5, height - 30);
         text("Lives: " + lives, width/10 * 8, height - 30);
         pop();
-        
-        this.moveIntruders();
 	}
+    ////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     
     // create new bullet and add it to the bullets array
     this.mouseClicked = function(tBool){
@@ -311,5 +338,8 @@ function AlienIntruders(){
                 intruders.push(new Intruder(i, j));
             }
         }
+        
+        // track amount of intruders still active
+        intruderAmount = intruders.length;
     }
 }
