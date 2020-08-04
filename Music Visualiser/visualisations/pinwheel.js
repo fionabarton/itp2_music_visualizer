@@ -1,6 +1,8 @@
 /*
+Source:
 https://editor.p5js.org/elinsterz/sketches/evrSX1kzZ
 This short example served as the starting point of both the “Hypnotic Squares” and “Pinwheel” extensions.
+
 */
 
 function Pinwheel() {
@@ -24,6 +26,8 @@ function Pinwheel() {
 	this.draw = function() {
         push();
         
+        noStroke();
+        
         // periodically set background color to a random color
         if(frameCount % 100 == floor(amp))
             {
@@ -41,7 +45,7 @@ function Pinwheel() {
                        1, height);
             }
 
-        // add amplitude to beginning of the array
+        // add current amplitude to beginning of the array
         amps.unshift(amp);
         // remove last element of the array
         amps.splice(100, 1);
@@ -51,10 +55,8 @@ function Pinwheel() {
         // displace objects to center of the canvas 
         translate(width/2, height/2);
 
-        // draw rectangles
+        // draw three circles of rotating rects, our pinwheel
         for(let i = 1; i < amps.length; i++){
-            noStroke();
-
             // rotation
             rotate(x);
             

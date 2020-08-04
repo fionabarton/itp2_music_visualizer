@@ -1,5 +1,10 @@
 /*
+Source:
 Brownian Motion: https://p5js.org/examples/simulate-brownian-motion.html
+
+Description:
+Dynamically draws four lines that are affected by the bass, low mid, high mid, and treble.
+
 */
 
 function Scribbles() {
@@ -15,14 +20,15 @@ function Scribbles() {
     let h;
     let t;
     
+    // variable to hold value of background color
     let backgroundColor = 0;
+    // variable for if backgroundColor is increasing or decreasing
     let upOrDown = true;
     
     // array to hold scribble points
     let scribbles = [];
     
     //////////////// Scribble Constructor ////////////////
-    
     function Scribble (x, y, color){
         this.spawnX = x;
         this.spawnY = y;
@@ -31,6 +37,7 @@ function Scribbles() {
         this.pointY = [];
     } 
 
+    // position and push scribble objects to array
     scribbles.push(new Scribble(width/5 * 1, height/2, [255, 0, 0, 100]));
     scribbles.push(new Scribble(width/5 * 2, height/2, [255, 255, 0, 100]));
     scribbles.push(new Scribble(width/5 * 3, height/2, [0, 0, 255, 100]));
@@ -49,20 +56,27 @@ function Scribbles() {
         h = fourier.getEnergy("highMid");
         t = fourier.getEnergy("treble");
         
-        
+        // gradually change background color, affected by current amplitude
         if(upOrDown){
+            // increase background color value
             backgroundColor += amp;
+            
+            // if reached max value, decrease value instead
+            if(backgroundColor >= 255){        
+                upOrDown = false;
+            }
         }else{
-            backgroundColor -= amp;      
+            // decrease background color value
+            backgroundColor -= amp;  
+            
+            // if reached min value, increase value instead
+            if(backgroundColor <= 0){
+                upOrDown = true;
+            }
         }
         
+        // set background color
         background(backgroundColor);
-
-        if(backgroundColor <= 0){
-            upOrDown = true;
-        }else if(backgroundColor >= 255){        
-            upOrDown = false;
-        }
         
         // assign a unique frequency (bass, lowMid, highMid, treble)
         // to each of the four scribbles
@@ -83,7 +97,7 @@ function Scribbles() {
                 break;  
             } 
             
-            // change spawn position
+            // randomly change spawn position, affected by frequency energy
             if(frameCount % 10 == 0){
                 scribbles[i].spawnX += random(-freq/2, freq/2);
                 scribbles[i].spawnY += random(-freq/2, freq/2);
@@ -98,7 +112,7 @@ function Scribbles() {
             scribbles[i].pointY.push(scribbles[i].spawnY);
 
             for ( let j = 0; j < scribbles[i].pointX.length; j++ ) {
-                // jiggle scribble points
+                // wiggle scribble points, affected by frequency energy
                 scribbles[i].pointX[j] += random(-freq/100, freq/100);
                 scribbles[i].pointY[j] += random(-freq/100, freq/100);
 

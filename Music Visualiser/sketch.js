@@ -1,22 +1,25 @@
 //global for the controls and input 
-var controls = null;
+let controls = null;
 //store visualisations in a container
-var vis = null;
+let vis = null;
 
 // array of p5 sound objects
-var sound = [];
+let sound = [];
 // index of current song
-var songNdx = 0;
+let songNdx = 0;
 // array of song names
-var songName = [];
+let songName = [];
 
 //variable for p5 fast fourier transform
-var fourier;
+let fourier;
 // variable for p5 amplitude
-var amplitude;
+let amplitude;
 
 // index of current visualisation
-var visNdx = 0;
+let visNdx = 0;
+
+// array of p5 image objects
+let images = [];
 
 function preload(){
 	sound = [loadSound('assets/Catch Me Off Guard.mp3'),
@@ -32,6 +35,20 @@ function preload(){
                 "Overworld", 
                 "Estudio", 
                 "Z1"];
+
+    images = [loadImage('assets/sprites/invader_5.png'),    // 0
+              loadImage('assets/sprites/invader_4.png'),    // 1
+              loadImage('assets/sprites/invader_3.png'),    // 2
+              loadImage('assets/sprites/invader_2.png'),    // 3
+              loadImage('assets/sprites/invader_1.png'),    // 4
+              loadImage('assets/sprites/explosion_1.png'),  // 5
+              loadImage('assets/sprites/explosion_2.png'),  // 6
+              loadImage('assets/sprites/player_1.png'),     // 7
+              loadImage('assets/sprites/player_2.png'),     // 8
+              loadImage('assets/sprites/ship_1.png'),       // 9
+              loadImage('assets/sprites/ship_2.png'),       // 10
+              loadImage('assets/sprites/bullet_1.png'),     // 11
+              loadImage('assets/sprites/bullet_2.png')];    // 12
 }
 
 function setup(){
@@ -67,7 +84,7 @@ function draw(){
 
     //////////////// TEST AREA ////////////////
     push();
-
+    
     
     pop();
 }

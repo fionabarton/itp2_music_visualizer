@@ -1,6 +1,6 @@
-//////////////// Intruder Constructor ////////////////
+//////////////// Player Constructor ////////////////
 
-function Intruder (x, y, spriteNdx){
+function Player (x, y, spriteNdx){
     this.xPos = x + 1;
     this.yPos = y + 1;
     this.width = 30;

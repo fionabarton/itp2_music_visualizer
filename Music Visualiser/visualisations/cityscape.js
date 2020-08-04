@@ -16,6 +16,7 @@ function Cityscape() {
     this.draw = function() {
         push();
 
+        // set background & stroke color
         background(225);
         stroke(255);
 
@@ -57,12 +58,12 @@ function Cityscape() {
                      0, PADDING * midgroundRects.length, 
                      0, width);
 
-            // draw midground rects
+            // draw midground rects 
             fill(i * 1.5);
             rect(x, height/2, W, midgroundRects[i]);
             rect(x, height/2, -W, -midgroundRects[i]);
 
-            // draw bottom half of canvas
+            // draw hazy effect on bottom half of canvas
             fill(i * 2.5, i * 2.5, i * 2.5, midgroundRects[i]/2);
             rect(x, height/2, width, height/2);
             noFill();

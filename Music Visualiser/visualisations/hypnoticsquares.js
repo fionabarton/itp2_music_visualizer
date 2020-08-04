@@ -1,6 +1,11 @@
 /*
+Source:
 https://editor.p5js.org/elinsterz/sketches/evrSX1kzZ
 This short example served as the starting point of both the “Hypnotic Squares” and “Pinwheel” extensions.
+
+Description
+Each rotating square consists of a set of four rects of decreasing size drawn on top of each other. The size of each rect is affected by the energy of a different frequency: bass, low mid, high mid, and treble. The speed at which they rotate is affected by the bass.
+
 */
 
 function HypnoticSquares() {
@@ -16,6 +21,20 @@ function HypnoticSquares() {
     let l;
     let h;
     let t;
+    
+    // draw a square consisting of four rects.
+    // each rect's size is affected by the level of a different frequency:
+    // bass, low mid, high mid, & treble
+    this.drawSquares = function(x, y, factor) {
+        fill(0, 0, 0, 150);
+        rect(x, y, 100 * b/factor, 100 * b/factor);
+        fill(75, 75, 75,  150);
+        rect(x, y, 100 * l/factor, 100 * l/factor);
+        fill(125, 125, 125,  150);
+        rect(x, y, 100 * h/factor, 100 * h/factor);
+        fill(255, 255, 255,  150);
+        rect(x, y, 100 * t/factor, 100 * t/factor);
+    }
     
     this.draw = function() {
         push();
@@ -44,8 +63,6 @@ function HypnoticSquares() {
         rotate(x);
         
         // draw squares
-        //this.drawSquares(0, 0, 6.25);
-        //this.drawSquares(0, 0, 12.5);
         this.drawSquares(0, 0, 25);
         this.drawSquares(0, 0, 50);
         this.drawSquares(0, 0, 100);
@@ -73,19 +90,5 @@ function HypnoticSquares() {
         this.drawSquares(0, width/4, 150);
         
         pop();
-    }
-    
-    // draw a square consisting of four rects.
-    // each rect's size is affected by the level of a different frequency:
-    // bass, low mid, high mid, & treble
-    this.drawSquares = function(x, y, factor) {
-        fill(0, 0, 0, 150);
-        rect(x, y, 100 * b/factor, 100 * b/factor);
-        fill(75, 75, 75,  150);
-        rect(x, y, 100 * l/factor, 100 * l/factor);
-        fill(125, 125, 125,  150);
-        rect(x, y, 100 * h/factor, 100 * h/factor);
-        fill(255, 255, 255,  150);
-        rect(x, y, 100 * t/factor, 100 * t/factor);
     }
 }

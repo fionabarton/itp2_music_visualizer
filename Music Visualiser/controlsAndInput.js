@@ -1,3 +1,18 @@
+/*
+//////////////////////////////////////////////////////////////////////
+
+TO BE COMPLETED:
+- Scale w/ canvas size
+- Implement keyboard shortcuts for playback and visualisation selection
+- Visual Polish
+- HOVER: 
+    - increase button size
+    - display text (play, pause, next/previous track/vis, mute, timeSlider mousePos/time)
+- Reset CurrentTime to 0:00 when skip track that is paused
+
+
+*/
+
 //Constructor function to handle the onscreen menu, keyboard and mouse
 //controls
 function ControlsAndInput(){

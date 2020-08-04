@@ -1,5 +1,15 @@
 /*
+Sources:
 Pie Chart: https://p5js.org/examples/form-pie-chart.html
+
+Gannt Chart:
+Draw pie chart with four quarters
+Implement pie chart constructor
+Use of amplitude/frequencies
+
+Description:
+Taking a page from the data visualisation app, this extension takes the four frequencies
+
 */
 
 function PieFrequencies() {
@@ -15,60 +25,64 @@ function PieFrequencies() {
     let h;
     let t;
 
-function pieChart(factor) {
-    // angle to start each of the four arcs
-    let lastAngle = 0;
-    
-    for (let i = 0; i < angles.length; i++) {
-        
-        // assign a frequency (bass, lowMid, highMid, treble)
-        // to each quarter of the pie chart 
-        let freq;
-        switch(i){
-            case 0:
-                freq = b;
-                fill(255,0,0,25);
-                break;
-            case 1:
-                freq = l;
-                fill(0,255,0,25);
-                break;
-            case 2:
-                freq = h;
-                fill(0,0,255,25);
-                break;
-            case 3:
-                freq = t;
-                fill(255,255,0,25);
-                break;  
-        }  
-      
-        // draw arc
-        arc(
-          width / 2,
-          height / 2,
-          freq * factor,
-          freq * factor,
-          lastAngle,
-          lastAngle + radians(angles[i]));
+    // draw pie chart divided into four slices
+    // proportional to the current bass, lowMid, highMid, treble 
+    this.drawPieChart = function(factor) {
+        // angle to start each of the four arcs
+        let lastAngle = 0;
 
-        // get angle to start the arc of the next arc
-        lastAngle += radians(angles[i]);
+        for (let i = 0; i < angles.length; i++) {
+
+            // assign a different frequency (bass, lowMid, highMid, treble)
+            // to each quarter of the pie chart 
+            let freq;
+            switch(i){
+                case 0:
+                    freq = b;
+                    fill(255,0,0,25);
+                    break;
+                case 1:
+                    freq = l;
+                    fill(0,255,0,25);
+                    break;
+                case 2:
+                    freq = h;
+                    fill(0,0,255,25);
+                    break;
+                case 3:
+                    freq = t;
+                    fill(255,255,0,25);
+                    break;  
+            }  
+
+            // draw arc
+            arc(
+              width / 2,
+              height / 2,
+              freq * factor,
+              freq * factor,
+              lastAngle,
+              lastAngle + radians(angles[i]));
+
+            // get angle to start the arc of the next arc
+            lastAngle += radians(angles[i]);
+        }
     }
-}
     
 	this.draw = function() {
         push();
 
-        // set background & stroke 
+        // set background color
         background(0);
+        
+        // set stroke & strokeWeight, affected by amplitude
         amp = map(amplitude.getLevel(), 
                            0, 1, 
                            1, 2500);
         strokeWeight(amp/100);
         stroke(amp);
 
-        // get frequencies
+        // get energy of frequencies
         fourier.analyze();
         b = fourier.getEnergy("bass");
         l = fourier.getEnergy("lowMid");
@@ -82,9 +96,9 @@ function pieChart(factor) {
         angles[2] = h * sum;
         angles[3] = t * sum;
 
-        // draw pie charts
+        // draw several layers of pie charts
         for (let i = 12; i > 0; i--) {
-             pieChart(i);
+             this.drawPieChart(i);
         }
         
         pop();

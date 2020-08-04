@@ -1,4 +1,5 @@
 /*
+Sources:
 https://p5js.org/examples/drawing-patterns.html
 Like the previous source, I started off with this example and hacked away at it until it bloomed into the “Gloop” extension.
 
@@ -21,15 +22,17 @@ function Gloop() {
     // name of the visualisation
     this.name = "Gloop";
 
-    // starting spawn position
-    let xPos = width/2;
-    let yPos = height/2;
+    // position to spawn droplets of gloop
+    let spawnPosX = width/2;
+    let spawnPosY = height/2;
 
     // array to hold droplets of gloop
     let droplets = [];
     
-    //////////////// Droplet Constructor ////////////////
+    // variable for current amplitude
+    let amp;
     
+    //////////////// Droplet Constructor ////////////////
     function Droplet (x, y){
         this.xPos = x;
         this.yPos = y;
@@ -39,20 +42,17 @@ function Gloop() {
         this.speed = random(0.5, 5);
     }
     
-    // variable for current amplitude
-    let amp;
-    
-    // variable to randomly determine direction to move spawn position
-    let coinFlip;
-    
     this.draw = function() {
         push();
         
+        // map amplitude
         amp = map(amplitude.getLevel(), 0, 1, 0, 200); 
 
+        // set background color
         background(0);
 
-        // background waveform
+        // draw waveform in the background,
+        // color affected by amplitude
         let waveform = fourier.waveform();
         beginShape();
         fill(amp * 10);
@@ -63,32 +63,31 @@ function Gloop() {
         }
         endShape();
 
-        // change spawn x position
-        coinFlip = floor(random(0, 2));
-        if(coinFlip <= 0){
-            xPos += amp;
+        // randomly change spawn x position
+        if(floor(random(0, 2)) <= 0){
+            spawnPosX += amp;
         }else{
-            xPos -= amp;
+            spawnPosX -= amp;
         }
 
-        // change spawn y position
-        coinFlip = floor(random(0, 2));
-        if(coinFlip <= 0){
-            yPos += amp;
+        // randomly change spawn y position
+        if(floor(random(0, 2)) <= 0){
+            spawnPosY += amp;
         }else{
-            yPos -= amp;
+            spawnPosY -= amp;
         }
 
         // constrain spawn position to canvas
-        xPos = constrain(xPos, 200, width - 200);
-        yPos = constrain(yPos, 100, height - 500);
+        spawnPosX = constrain(spawnPosX, 200, width - 200);
+        spawnPosY = constrain(spawnPosY, 100, height - 500);
         
-        // create new droplet of gloop
-        droplets.push(new Droplet(xPos, yPos));
+        // populate array with new "droplet of gloop" object
+        droplets.push(new Droplet(spawnPosX, spawnPosY));
 
         for(let i = 0; i < droplets.length; i++){
             
-            // change droplet's yPos, width, height, & color
+            // change droplet's yPos, width, height, & color,
+            // affected by amplitude
             droplets[i].yPos += droplets[i].speed * max(1, amp/10);
             droplets[i].width -= droplets[i].speed * max(1, amp/10);
             droplets[i].height -= droplets[i].speed * max(1, amp/10);
