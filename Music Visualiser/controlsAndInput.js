@@ -1,18 +1,3 @@
-/*
-//////////////////////////////////////////////////////////////////////
-
-TO BE COMPLETED:
-- Scale w/ canvas size
-- Implement keyboard shortcuts for playback and visualisation selection
-- Visual Polish
-- HOVER: 
-    - increase button size
-    - display text (play, pause, next/previous track/vis, mute, timeSlider mousePos/time)
-- Reset CurrentTime to 0:00 when skip track that is paused
-
-
-*/
-
 //Constructor function to handle the onscreen menu, keyboard and mouse
 //controls
 function ControlsAndInput(){
@@ -22,61 +7,62 @@ function ControlsAndInput(){
     this.displayMenuAtStart = true;
 
 	// buttons
-	var playbackButton = new PlaybackButton();
-    var nextTrackButton = new NextTrackButton();
-    var previousTrackButton = new PreviousTrackButton();
-    var nextVisualisationButton = new NextVisualsationButton();
-    var previousVisualisationButton = new PreviousVisualsationButton();
+	let playbackButton = new PlaybackButton();
+    let nextTrackButton = new NextTrackButton();
+    let previousTrackButton = new PreviousTrackButton();
+    let nextVisualisationButton = new NextVisualsationButton();
+    let previousVisualisationButton = new PreviousVisualsationButton();
+    let volumeButton = new VolumeButton();
     
     // variables for sliders
-    var rateSlider;
-    var volumeSlider;
-    var panSlider;
+    let rateSlider;
+    this.volumeSlider;
+    let panSlider;
     
-    var rateSliderX =  width - 140; // scale w/ canvas size
-    var rateSliderY =  30;
+    let rateSliderX =  width - 140; // also assigned in draw()
+    let rateSliderY =  30;
     
-    var panSliderX =  width - 140; // scale w/ canvas size
-    var panSliderY =  75;
+    let panSliderX =  width - 140; // also assigned in draw()
+    let panSliderY =  75;
     
     // progress bar
-    var progressBarX = 20;
-    var progressBarY = 100;
-    var progressBarW = 200;
-    var progressBarH = 20;
+    let progressBarX = 20;
+    let progressBarY = 100;
+    let progressBarW = 200;
+    let progressBarH = 20;
     
     // menu border
-    var menuWidth = width;      // scale w/ canvas size
-    var menuHeight = height/6;  // scale w/ canvas size
+    let menuWidth = width; // also assigned in draw()
+    let menuHeight = height/6;
     
     // visualisations text
-    var visNameTextY = 20;
-    var visTextY = 45;
+    let visNameTextY = 20;
+    let visTextY = 45;
     
     // song title text
-    var songTitleTextX = 20;
-    var songTitleTextY = 20;
+    let songTitleTextX = 20;
+    let songTitleTextY = 20;
     
     // slider text
-    var rateTextY = 20
-    var panTextY = 70
+    let rateTextY = 20
+    let panTextY = 70
     
     // volume icon
     // ...to be implemented!
     
     // current time, duration, progress bar
-    var currentTime;    
-    var duration;
-    var currentTimeCache = 0;
-    var timeRelativeToSlider = 0;
+    let currentTime;    
+    let duration;
+    this.currentTimeCache = 0;
+    let timeRelativeToSlider = 0;
     
     // create volume slider
-    volumeSlider = createSlider(0, 1, 0.5, 0.1);
-    volumeSlider.position(200, 30);
-    volumeSlider.style('width', '80px');
-    volumeSlider.style('-webkit-appearance', 'none');
-    volumeSlider.style('background', '#ff6600');
-    volumeSlider.style('border-radius', '5px');
+    this.volumeSlider = createSlider(0, 1, 0.5, 0.1);
+    this.volumeSlider.position(200, 30);
+    this.volumeSlider.style('width', '80px');
+    this.volumeSlider.style('-webkit-appearance', 'none');
+    this.volumeSlider.style('background', '#ff6600');
+    this.volumeSlider.style('border-radius', '5px');
     
     // create playback rate slider
     rateSlider = createSlider(0, 2, 1, 0.1);
@@ -101,6 +87,7 @@ function ControlsAndInput(){
         previousTrackButton.hitCheck();
         nextVisualisationButton.hitCheck();
         previousVisualisationButton.hitCheck();
+        volumeButton.hitCheck();
         
         this.mouseClicked();
 	};
@@ -119,6 +106,7 @@ function ControlsAndInput(){
         if(this.menuDisplayed){
             push();
 
+            // initialize text & stroke settings
             textSize(15);
             textFont("Arial");
             stroke(255);
@@ -141,25 +129,24 @@ function ControlsAndInput(){
             previousTrackButton.draw();
             nextVisualisationButton.draw();
             previousVisualisationButton.draw();
+            volumeButton.draw();
 
             //////////////// Sliders ////////////////
             
             // Set slider positions
-            
-            // scale w/ canvas size
-            rateSliderX =  width - 140; 
+            rateSliderX =  width - 140;
             panSliderX =  width - 140;
             rateSlider.position(rateSliderX, rateSliderY);
             panSlider.position(panSliderX, panSliderY);
             
             // Show sliders
             rateSlider.show();
-            volumeSlider.show();
+            this.volumeSlider.show();
             panSlider.show();
             
-            // Get slider values
-            sound[songNdx].rate (rateSlider.value()); 
-            masterVolume(volumeSlider.value());
+            // Set values to slider values
+            sound[songNdx].rate(rateSlider.value());
+            masterVolume(this.volumeSlider.value());
             sound[songNdx].pan(panSlider.value());
 
             // line to indicate middle of sliders 
@@ -180,7 +167,7 @@ function ControlsAndInput(){
             
             // Cache current time because currentTime() is not defined when !isPlaying()
             if(sound[songNdx].isPlaying()){
-                currentTimeCache = sound[songNdx].currentTime();
+                this.currentTimeCache = sound[songNdx].currentTime();
             }
 
             //////////////// Progress Bar Rect ////////////////
@@ -189,8 +176,8 @@ function ControlsAndInput(){
             fill(125, 125, 125);
             rect(progressBarX, progressBarY, progressBarW, progressBarH);
 
-            var playTimeLength = 
-            map(abs(currentTimeCache - sound[songNdx].duration()), 
+            let playTimeLength = 
+            map(abs(this.currentTimeCache - sound[songNdx].duration()), 
                 sound[songNdx].duration(), 0, 
                 0, progressBarW);
 
@@ -201,10 +188,10 @@ function ControlsAndInput(){
             //////////////// Current Time / Duration Text ////////////////
             
             // Get current time
-            var minutes = parseInt(currentTimeCache / 60);
-            var seconds = parseInt(currentTimeCache % 60);    
+            let minutes = parseInt(this.currentTimeCache / 60);
+            let seconds = parseInt(this.currentTimeCache % 60);    
 
-            // 0:00 format
+            // convert to 0:00 format
             if(seconds > 9){
                 currentTime = minutes + ":" + seconds;  
             }else{
@@ -212,10 +199,10 @@ function ControlsAndInput(){
             }
 
             // Get song duration
-            var minutes = parseInt(sound[songNdx].duration() / 60);
-            var seconds = parseInt(sound[songNdx].duration() % 60);    
+            minutes = parseInt(sound[songNdx].duration() / 60);
+            seconds = parseInt(sound[songNdx].duration() % 60);    
             
-            // 0:00 format
+            // convert to 0:00 format
             if(seconds > 9){
                 duration = minutes + ":" + seconds;  
             }else{
@@ -233,26 +220,13 @@ function ControlsAndInput(){
             textAlign(CENTER);
             text("VIS", width/2, visTextY );
             text(visNdx + 1 + ": " +vis.visuals[visNdx].name, width/2, visNameTextY);
-            
-            //////////////// Volume Icon ////////////////
-            
-            fill('#0085ff');
-            triangle(170, 30, 
-                     152, 40, 
-                     170, 50);
-            rect(150, 35, 10 , 10);
-
-            noFill();
-            
-            arc(180, 40, 10, 10, -HALF_PI, HALF_PI);
-            arc(180, 40, 20, 20, -HALF_PI, HALF_PI);
 
             pop();
             
         }else{
             // Hide sliders
             rateSlider.hide();
-            volumeSlider.hide();
+            this.volumeSlider.hide();
             panSlider.hide();
         }
 	};
@@ -286,7 +260,7 @@ function ControlsAndInput(){
             if(sound[songNdx].isPlaying()){
                 sound[songNdx].jump(timeRelativeToSlider);
             }else{
-                //currentTimeCache = timeRelativeToSlider;
+                //this.currentTimeCache = timeRelativeToSlider;
             }
         }  
 	};
@@ -296,18 +270,18 @@ function ControlsAndInput(){
 	//@param keycode the ascii code of the keypressed
 	this.keyPressed = function(keycode){
 		// play/pause sound
-		if(keyCode == 32){
+		if(keyCode == 32){ // space bar on the keyboard
            playbackButton.playPause();
 
 		}
         
         // mute/unmute sound
-//        if(keyCode == 77){
-//            console.log("Mute/Unmute: to be implemented");
-//		}
+        if(keyCode == 77){ // letter 'm' on the keyboard
+            volumeButton.muteUnmute();
+		}
 
-        // select visualisation
-		if(keyCode > 48 && keyCode < 58){
+        // select visualisation 
+		if(keyCode > 48 && keyCode < 57){ // numbers to 1 to 9
 			var visNumber = keycode - 49;
             if(vis.visuals[visNumber]){
                 visNdx = visNumber;

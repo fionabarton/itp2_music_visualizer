@@ -26,25 +26,29 @@ function NextTrackButton(){
 
     this.playNextSong = function(){ 
         if (sound[songNdx].isPlaying()) {
-            // stop current song
-            sound[songNdx].stop();
-            
-            // change song index
-            if(songNdx < sound.length - 1){
-                songNdx += 1;
-            }else{
-                songNdx = 0;
-            }
+            // stop current song and change song index
+            this.stopAndChangeNdx();
                 
             // play song
             sound[songNdx].play();
         }else{
-            // change song index
-            if(songNdx < sound.length - 1){
-                songNdx += 1;
-            }else{
-                songNdx = 0;
-            }
+            // stop current song and change song index
+            this.stopAndChangeNdx();
+            
+            // reset currentTime for controlsAndInput.js
+            controls.currentTimeCache = 0;
+        }
+    }
+    
+    this.stopAndChangeNdx = function(){
+        // stop current song
+        sound[songNdx].stop();
+
+        // change song index
+        if(songNdx < sound.length - 1){
+            songNdx += 1;
+        }else{
+            songNdx = 0;
         }
     }
 }
