@@ -102,5 +102,5 @@ function PieFrequencies() {
         }
         
         pop();
-	};
+	}
 }

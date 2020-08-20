@@ -82,5 +82,5 @@ function Pinwheel() {
             noFill();
         }
         pop();
-	};
+	}
 }

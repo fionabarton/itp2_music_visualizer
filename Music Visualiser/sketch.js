@@ -22,12 +22,13 @@ let visNdx = 0;
 let images = [];
 
 function preload(){
-	sound = [loadSound('assets/Catch Me Off Guard.mp3'),
-             loadSound('assets/View From Saturday.mp3'),
-             loadSound('assets/Shop.mp3'),
-             loadSound('assets/Overworld.mp3'),
-             loadSound('assets/Estudio.mp3'),
-             loadSound('assets/Z1.mp3')];
+    // all music is original
+	sound = [loadSound('assets/sounds/Catch Me Off Guard.mp3'),
+             loadSound('assets/sounds/View From Saturday.mp3'),
+             loadSound('assets/sounds/Shop.mp3'),
+             loadSound('assets/sounds/Overworld.mp3'),
+             loadSound('assets/sounds/Estudio.mp3'),
+             loadSound('assets/sounds/Z1.mp3')];
     
     songName = ["Catch Me Off Guard", 
                 "View From Saturday", 
@@ -36,19 +37,20 @@ function preload(){
                 "Estudio", 
                 "Z1"];
 
-    images = [loadImage('assets/sprites/invader_5.png'),    // 0
-              loadImage('assets/sprites/invader_4.png'),    // 1
-              loadImage('assets/sprites/invader_3.png'),    // 2
-              loadImage('assets/sprites/invader_2.png'),    // 3
-              loadImage('assets/sprites/invader_1.png'),    // 4
-              loadImage('assets/sprites/explosion_1.png'),  // 5
-              loadImage('assets/sprites/explosion_2.png'),  // 6
-              loadImage('assets/sprites/player_1.png'),     // 7
-              loadImage('assets/sprites/player_2.png'),     // 8
-              loadImage('assets/sprites/ship_1.png'),       // 9
-              loadImage('assets/sprites/ship_2.png'),       // 10
-              loadImage('assets/sprites/bullet_1.png'),     // 11
-              loadImage('assets/sprites/bullet_2.png')];    // 12
+    // all images are original
+    images = [loadImage('assets/images/invader_5.png'),    // 0
+              loadImage('assets/images/invader_4.png'),    // 1
+              loadImage('assets/images/invader_3.png'),    // 2
+              loadImage('assets/images/invader_2.png'),    // 3
+              loadImage('assets/images/invader_1.png'),    // 4
+              loadImage('assets/images/explosion_1.png'),  // 5
+              loadImage('assets/images/explosion_2.png'),  // 6
+              loadImage('assets/images/player_1.png'),     // 7
+              loadImage('assets/images/player_2.png'),     // 8
+              loadImage('assets/images/ship_1.png'),       // 9
+              loadImage('assets/images/ship_2.png'),       // 10
+              loadImage('assets/images/bullet_1.png'),     // 11
+              loadImage('assets/images/bullet_2.png')];    // 12
 }
 
 function setup(){
@@ -106,6 +108,13 @@ function keyPressed(){
 //if the visualisation needs to be resized call its onResize method
 function windowResized(){
 	resizeCanvas(windowWidth, windowHeight);
+    console.log("RESIZE" + " Width: " + width);
+    
+    width = windowWidth;
+    height = windowHeight;
+    
+    controls.onResize();
+    
 	if(vis.selectedVisual.hasOwnProperty('onResize')){
 		vis.selectedVisual.onResize();
 	}

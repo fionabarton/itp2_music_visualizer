@@ -1,13 +1,4 @@
 /*
-8/3 
-COMPLETED:
-- Draw and add images for Player, Intruders, Explosion, & Bullets
-
-BUG:
-SOLUTION:
-
-//////////////////////////////////////////////////////////////////////
-
 TO BE COMPLETED:
 
 STATE:
@@ -17,6 +8,11 @@ STATE:
 UI:
 - Provide user w/ INSTRUCTIONS: Move mouse to move player left or right, click to  fire a bullet
 
+CONSTRUCTORS:
+- Player
+- Fleet
+- Bullet
+
 TUNE:
 - Enemy: Movement
 - Image Positions
@@ -25,15 +21,11 @@ TUNE:
 - Mystery ship
 - Enemy Explosion and/or display points
 - Enemy: different points for different enemies?
-
 - SFX
-- Scale w/ canvas size
-- Constructors: Player, Fleet, Bullet
 
 //////////////////////////////////////////////////////////////////////
 Sources:
 Timer: https://editor.p5js.org/marynotari/sketches/S1T2ZTMp-
-
 
 */
 
@@ -123,8 +115,10 @@ function AlienIntruders(){
         h = map(fourier.getEnergy("highMid"), 0, 255, 1, 10);
         t = map(fourier.getEnergy("treble"), 0, 255, 1, 10);
         
-        //////////////// Draw Stars ////////////////
+        // scale w/ canvas size
+        //playerYPos = height/1.2;
         
+        //////////////// Draw Stars ////////////////
         for(let i = 0; i < stars.length; i++){
             stars[i].update(t);
             stars[i].draw(t);
@@ -139,9 +133,7 @@ function AlienIntruders(){
                 text("Click to play", menuButtonX + MENU_BUTTON_W/2, menuButtonY + MENU_BUTTON_H/2);
                 break;
             case 1: //////////////// Gameplay ////////////////
-                // scale w/ canvas size
-                playerYPos = height/1.2;
-
+ 
                 // move the fleet
                 this.moveIntruders();
                 
@@ -244,15 +236,11 @@ function AlienIntruders(){
         }
 
         //////////////// Draw Intruders ////////////////
-
         for(let i = 0; i < intruders.length; i++){
             intruders[i].draw(b);
         }
 
         //////////////// Draw Player Ship ////////////////
-
-        
-        
         switch(gameState){
             case 0:
             case 1:
@@ -330,7 +318,6 @@ function AlienIntruders(){
         }
 
         //////////////// Draw Score & Lives Text ////////////////
-        
         fill(0,255,0);
         textSize(15);
         text("Score: " + score, width/10, height - 30);
@@ -416,9 +403,11 @@ function AlienIntruders(){
         intruderAmount = intruders.length;
     }
     
+    this.onResize = function(){
+        playerYPos = height/1.2;
+    }
     
     //////////////// Bullet Constructor ////////////////
-    
     function Bullet(x, y, r, g, isPlayerBullet){
         this.xPos = x;
         this.yPos = y;
@@ -429,9 +418,10 @@ function AlienIntruders(){
         this.isPlayerBullet = isPlayerBullet;
         this.active = true;
         this.spriteNdx;
-        this.padding = 9; // for collisions
+        //this.padding = 9; // for collisions
+        this.padding = max(9, b * 2);
         
-        if(isPlayerBullet){
+        if(this.isPlayerBullet){
             this.spriteNdx = 11;
         }else{
             this.spriteNdx = 12;
@@ -441,16 +431,17 @@ function AlienIntruders(){
         this.onCollision = function(initializeGame){
             
             // cached to make the following code more readable 
-            let pad = max(this.padding, b * 2)
+            //let pad = max(this.padding, b * 2);
+            this.padding = max(9, b * 2);
             
             // player bullet collides w/ intruder
             if(this.isPlayerBullet){
                 for(let i = 0; i < intruders.length; i++){
                     if(intruders[i].active){
-                        if(this.xPos + pad > intruders[i].xPos * width/12.5 && 
-                           this.xPos + this.width - pad < intruders[i].xPos * width/12.5 + intruders[i].width && 
-                           this.yPos + pad > intruders[i].yPos * height/12.5 && 
-                           this.yPos + this.height - pad < intruders[i].yPos * height/12.5 + intruders[i].height 
+                        if(this.xPos + this.padding > intruders[i].xPos * width/12.5 && 
+                           this.xPos + this.width - this.padding < intruders[i].xPos * width/12.5 + intruders[i].width && 
+                           this.yPos + this.padding > intruders[i].yPos * height/12.5 && 
+                           this.yPos + this.height - this.padding < intruders[i].yPos * height/12.5 + intruders[i].height 
                           ){ 
                             // deactivate intruder
                             intruders[i].active = false;
@@ -474,10 +465,10 @@ function AlienIntruders(){
                    
             // intruder bullet collides w/ player
             }else{ 
-                if(this.xPos + pad > playerXPos - max(this.padding, b) && 
-                   this.xPos + this.width - pad < playerXPos - pad + PLAYER_W + pad && 
-                   this.yPos + pad > playerYPos - max(this.padding, b) &&
-                   this.yPos + this.height - pad < playerYPos - pad + PLAYER_H + pad){  
+                if(this.xPos + this.padding > playerXPos - this.padding && 
+                   this.xPos + this.width - this.padding < playerXPos - this.padding + PLAYER_W + this.padding && 
+                   this.yPos + this.padding > playerYPos - this.padding &&
+                   this.yPos + this.height - this.padding < playerYPos - this.padding + PLAYER_H + this.padding){  
                     
                     // deactivate bullet 
                     this.active = false;
@@ -492,8 +483,6 @@ function AlienIntruders(){
                     }else{
                         gameState = 2
                     }
-                    
-                    
                 }
             }
         } 

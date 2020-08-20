@@ -45,7 +45,6 @@ function HypnoticSquares() {
         l = fourier.getEnergy("lowMid");
         h = fourier.getEnergy("highMid");
         t = fourier.getEnergy("treble");
-        //console.log("B: " + b + " L: " + l + " H: " + h + " T: " + t );
 
         // set background color to mapped amplitude level
         let amp = map(amplitude.getLevel(), 0, 1, 0, 2500); 
