@@ -21,6 +21,9 @@ let visNdx = 0;
 // array of p5 image objects
 let images = [];
 
+// cache instance of AlienIntruders for use of constructors 
+let aliens;
+
 function preload(){
     // all music is original
 	sound = [loadSound('assets/sounds/Catch Me Off Guard.mp3'),
@@ -75,6 +78,9 @@ function setup(){
     vis.add(new Cityscape());
     vis.add(new Pinwheel());
     vis.add(new Test());
+    
+    // cache instance of AlienIntruders for use of constructors 
+    aliens = vis.visuals[0];
 }
 
 function draw(){
@@ -108,8 +114,8 @@ function keyPressed(){
 //if the visualisation needs to be resized call its onResize method
 function windowResized(){
 	resizeCanvas(windowWidth, windowHeight);
-    console.log("RESIZE" + " Width: " + width);
-    
+
+    // set width & height to new window width & height
     width = windowWidth;
     height = windowHeight;
     

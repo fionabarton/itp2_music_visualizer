@@ -14,9 +14,6 @@ function VolumeButton(){
     this.volumeCache;
 
 	this.draw = function(){
-//        // declared here to change w/ width size
-//        this.x = width/2 + 30;
-
         push();
         
         // draw next volume icon

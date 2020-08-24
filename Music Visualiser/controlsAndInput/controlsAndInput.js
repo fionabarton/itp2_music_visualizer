@@ -1,28 +1,3 @@
-/*
-8/19 
-COMPLETED:
-Separate .js files for (controlsAndInput.js was getting crowded): 
-- Time Display/Progress Bar
-- Range Sliders
-
-Added onResize functions to account for the browser window being resized:
-- controlsAndInput.js
-- rangeSliders.js
-- nextVisualisationButton.js
-- previousVisualisationButton.js
-- alienintruders.js : playerYPos 
-
-
-
-- bullet.draw()
-
-
-BUG: 
-When paused, if next/previous track button pressed, currentTime does not display 0:00
-SOLUTION:
-
-*/
-
 //Constructor function to handle the onscreen menu, keyboard and mouse
 //controls
 function ControlsAndInput(){
@@ -47,7 +22,7 @@ function ControlsAndInput(){
     
     // menu border
     let menuWidth = width; // scale w/ canvas size
-    let menuHeight = height/6; // scale w/ canvas size
+    let menuHeight = 150; 
     
     // visualisations text
     let visNameTextY = 20;
@@ -90,10 +65,6 @@ function ControlsAndInput(){
             strokeWeight(2);
             
             //////////////// Draw Menu Border ////////////////
-            // scale w/ canvas size
-            //menuWidth = width;
-            //menuHeight = max(150, height/6);
-            
             noFill();
             fill(0,0,0,150);
             rect(0, 0, menuWidth, menuHeight);
@@ -167,7 +138,6 @@ function ControlsAndInput(){
     
     this.onResize = function(){
         menuWidth = width;
-        menuHeight = max(150, height/6);
         
         this.rangeSliders.onResize();
         nextVisualisationButton.onResize();

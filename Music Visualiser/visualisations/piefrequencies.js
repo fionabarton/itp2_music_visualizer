@@ -96,8 +96,8 @@ function PieFrequencies() {
         angles[2] = h * sum;
         angles[3] = t * sum;
 
-        // draw several layers of pie charts
-        for (let i = 12; i > 0; i--) {
+        // draw 5 layers of pie charts
+        for (let i = 5; i > 0; i--) {
              this.drawPieChart(i);
         }
         

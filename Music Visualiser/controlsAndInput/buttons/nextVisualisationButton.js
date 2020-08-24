@@ -7,9 +7,6 @@ function NextVisualsationButton(){
 	this.height = 20;
 
 	this.draw = function(){
-        // declared here to change w/ width size
-        //this.x = width/2 + 30;
-        
         // draw next visualisation icon
         fill('#0085ff');
         triangle(this.x, this.y, 

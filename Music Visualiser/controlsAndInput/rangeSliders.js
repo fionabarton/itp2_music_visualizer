@@ -51,14 +51,7 @@ function RangeSliders(){
             textFont("Arial");
             stroke(255);
             strokeWeight(2);
-            
-            // Set slider positions
-//            rateSliderX =  width - 140;
-//            panSliderX =  width - 140;
-            
-//            rateSlider.position(rateSliderX, rateSliderY);
-//            panSlider.position(panSliderX, panSliderY);
-            
+
             // Show sliders
             rateSlider.show();
             this.volumeSlider.show();
@@ -88,7 +81,11 @@ function RangeSliders(){
     }
     
     this.onResize = function(){
-        rateSliderX =  width - 140;
-        panSliderX =  width - 140;
+        rateSliderX = width - 140;
+        panSliderX = width - 140;
+        
+        // Set slider positions
+        rateSlider.position(rateSliderX, rateSliderY);
+        panSlider.position(panSliderX, panSliderY);
     }
 }
