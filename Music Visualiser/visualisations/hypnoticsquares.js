@@ -25,7 +25,7 @@ function HypnoticSquares() {
     // draw a square consisting of four rects.
     // each rect's size is affected by the level of a different frequency:
     // bass, low mid, high mid, & treble
-    this.drawSquares = function(x, y, factor) {
+    let drawSquares = function(x, y, factor) {
         fill(0, 0, 0, 150);
         rect(x, y, 100 * b/factor, 100 * b/factor);
         fill(75, 75, 75,  150);
@@ -62,10 +62,10 @@ function HypnoticSquares() {
         rotate(x);
         
         // draw squares
-        this.drawSquares(0, 0, 25);
-        this.drawSquares(0, 0, 50);
-        this.drawSquares(0, 0, 100);
-        this.drawSquares(0, 0, 200);
+        drawSquares(0, 0, 25);
+        drawSquares(0, 0, 50);
+        drawSquares(0, 0, 100);
+        drawSquares(0, 0, 200);
   
         pop();
 
@@ -83,10 +83,10 @@ function HypnoticSquares() {
         rotate(y);
 
         // draw squares
-        this.drawSquares(width/4, 0, 150);
-        this.drawSquares(-width/4, 0, 150);
-        this.drawSquares(0, -width/4, 150);
-        this.drawSquares(0, width/4, 150);
+        drawSquares(width/4, 0, 150);
+        drawSquares(-width/4, 0, 150);
+        drawSquares(0, -width/4, 150);
+        drawSquares(0, width/4, 150);
         
         pop();
     }

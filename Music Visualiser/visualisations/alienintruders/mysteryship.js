@@ -7,7 +7,7 @@ function MysteryShip (){
     this.height = 30;
     
     this.points = 50;
-    this.active = false;
+    let active = false;
     let speed = 3;
     let movingLeft;
     
@@ -18,7 +18,7 @@ function MysteryShip (){
     let flicker;
 
     this.initialize = function(){
-        this.active = false;
+        active = false;
         
         // set random time until ship launches
         timer = floor(random(5,20));
@@ -35,7 +35,7 @@ function MysteryShip (){
     }
 
     this.update = function(){
-        if(this.active){
+        if(active){
             if(movingLeft){
                 // move ship to the left
                 this.xPos -= speed;
@@ -77,14 +77,14 @@ function MysteryShip (){
 
             // if time's up, activate mystery ship
             if (timer == 0) {
-                this.active = true;
+                active = true;
             }
         }
     }
 
     // draw mystery ship, size affected by bass 
     this.draw = function(spriteNdx){
-        if(this.active){
+        if(active){
             image(images[spriteNdx], 
                  this.xPos,
                  this.yPos,

@@ -25,7 +25,7 @@ let images = [];
 let aliens;
 
 function preload(){
-    // all music is original
+    // all music is original, recorded or programmed on various hardware over the years
 	sound = [loadSound('assets/sounds/Catch Me Off Guard.mp3'),
              loadSound('assets/sounds/View From Saturday.mp3'),
              loadSound('assets/sounds/Shop.mp3'),
@@ -40,7 +40,8 @@ function preload(){
                 "Estudio", 
                 "Z1"];
 
-    // all images are original
+    // sprites for AlienIntruders extension
+    // all images are original, drawn in GIMP
     images = [loadImage('assets/images/invader_5.png'),    // 0
               loadImage('assets/images/invader_4.png'),    // 1
               loadImage('assets/images/invader_3.png'),    // 2
@@ -89,12 +90,6 @@ function draw(){
 
 	//draw the controls on top.
 	controls.draw();
-
-    //////////////// TEST AREA ////////////////
-    push();
-    
-    
-    pop();
 }
 
 function mouseClicked(){

@@ -1,5 +1,6 @@
+// Constructor function to handle displaying the currentTime &
+// duration of the sound being played. Also handles the progress bar.
 function TimeDisplay(){
-    
     // variables progress bar position & size
     let progressBarX = 20;
     let progressBarY = 100;
@@ -40,7 +41,7 @@ function TimeDisplay(){
         fill(255, 0, 0);
         rect(progressBarX, progressBarY, playTimeLength, progressBarH);
 
-        //////////////// Current Time / Duration Text ////////////////
+        //////////////// Get & Display Current Time / Duration Text ////////////////
         // Get current time as an int
         let minutes = parseInt(this.currentTimeCache / 60);
         let seconds = parseInt(this.currentTimeCache % 60);    

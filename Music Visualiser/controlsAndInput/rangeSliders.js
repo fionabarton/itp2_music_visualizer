@@ -1,3 +1,5 @@
+// Constructor function to handle the range sliders for
+// volume, playback rate, and stereo panning
 function RangeSliders(){
     // variables for sliders
     let rateSlider;
@@ -45,7 +47,6 @@ function RangeSliders(){
     this.draw = function(){
         push();
         if(controls.menuDisplayed){
-            //////////////// Range Sliders ////////////////
             // initialize text & stroke settings
             textSize(15);
             textFont("Arial");
@@ -57,9 +58,11 @@ function RangeSliders(){
             this.volumeSlider.show();
             panSlider.show();
             
-            // Set values to slider values
+            // Set playback rate to value of rateSlider
             sound[songNdx].rate(rateSlider.value());
-            masterVolume(this.volumeSlider.value());
+            // Set master volume to value of volumeSlider
+            //masterVolume(this.volumeSlider.value());
+            // Set pan to value of panSlider
             sound[songNdx].pan(panSlider.value());
 
             // line to indicate middle of sliders 
@@ -77,9 +80,14 @@ function RangeSliders(){
             this.volumeSlider.hide();
             panSlider.hide();
         }
+        
+        // Set master volume to value of volumeSlider
+        masterVolume(this.volumeSlider.value());
+        
         pop();
     }
     
+    // scale w/ canvas size
     this.onResize = function(){
         rateSliderX = width - 140;
         panSliderX = width - 140;

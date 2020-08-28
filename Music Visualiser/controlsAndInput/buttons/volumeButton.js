@@ -1,11 +1,11 @@
 // displays and handles clicks on the volume button.
 function VolumeButton(){
 	// variables for button position/size
-    this.x = 150;
-	this.y = 30;
-	this.w = 10;
-	this.h = 10;
-    this.pad = 10;
+    let x = 150;
+	let y = 30;
+	let w = 10;
+	let h = 10;
+    let pad = 10;
     
     // variable to change the how the volume icon's drawn if muted
     this.isMuted = false;
@@ -18,20 +18,20 @@ function VolumeButton(){
         
         // draw next volume icon
         fill('#0085ff');
-        triangle((this.x + this.pad * 2), (this.y), 
-                 (this.x), (this.y + this.pad), 
-                 (this.x + this.pad * 2), (this.y + this.pad * 2));
-        rect(this.x, this.y + this.pad / 2, this.w, this.h);
+        triangle((x + pad * 2), (y), 
+                 (x), (y + pad), 
+                 (x + pad * 2), (y + pad * 2));
+        rect(x, y + pad / 2, w, h);
         
         noFill();
 
         if(this.isMuted){
             // draw diagonal lines across volume icon to indicated MUTED
             if(controls.rangeSliders.volumeSlider.value() <= 0){
-                line((this.x - this.pad / 2), (this.y - this.pad / 2), 
-                     (this.x + this.pad * 2.5), (this.y + this.pad * 2.5));
-                line((this.x + this.pad * 2.5), (this.y - this.pad / 2),
-                     (this.x - this.pad / 2), (this.y + this.pad * 2.5));
+                line((x - pad / 2), (y - pad / 2), 
+                     (x + pad * 2.5), (y + pad * 2.5));
+                line((x + pad * 2.5), (y - pad / 2),
+                     (x - pad / 2), (y + pad * 2.5));
             }else{
                 this.isMuted = false;
             }   
@@ -42,20 +42,20 @@ function VolumeButton(){
             
             // draw "sound wave" with up to three arcs depending on volume level
             if (controls.rangeSliders.volumeSlider.value() > 0){
-                arc(this.x + this.pad * 3, this.y + this.pad, 
-                this.w, this.h, 
+                arc(x + pad * 3, y + pad, 
+                w, h, 
                 -HALF_PI, HALF_PI);
             }
    
             if (controls.rangeSliders.volumeSlider.value() >= 0.33){
-                arc(this.x + this.pad * 3, this.y + this.pad, 
-                this.w * 2, this.h * 2, 
+                arc(x + pad * 3, y + pad, 
+                w * 2, h * 2, 
                 -HALF_PI, HALF_PI); 
             } 
             
             if (controls.rangeSliders.volumeSlider.value() >= 0.66){
-                arc(this.x + this.pad * 3, this.y + this.pad, 
-                this.w * 3, this.h * 3, 
+                arc(x + pad * 3, y + pad, 
+                w * 3, h * 3, 
                 -HALF_PI, HALF_PI);       
             }
         }
@@ -77,8 +77,8 @@ function VolumeButton(){
 
 	// checks for clicks on the button, mutes or unmutes the volume.
 	this.hitCheck = function(){
-		if(mouseX > this.x && mouseX < this.x + this.w + this.pad * 2 && 
-           mouseY > this.y && mouseY < this.y + this.h + this.pad * 2){
+		if(mouseX > x && mouseX < x + w + pad * 2 && 
+           mouseY > y && mouseY < y + h + pad * 2){
             this.muteUnmute();
         }
 	}

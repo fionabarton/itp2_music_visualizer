@@ -66,10 +66,11 @@ function Cityscape() {
             // draw hazy effect on bottom half of canvas
             fill(i * 2.5, i * 2.5, i * 2.5, midgroundRects[i]/2);
             rect(x, height/2, width, height/2);
-            noFill();
-            noStroke();
         }
-
+        
+        noFill();
+        noStroke();
+        
         pop();
     }   
 }

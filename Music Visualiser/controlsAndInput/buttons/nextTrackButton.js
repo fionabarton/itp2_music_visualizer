@@ -1,46 +1,46 @@
-//displays and handles clicks on the next track button.
+// displays and handles clicks on the next track button.
 function NextTrackButton(){
 	// variables for button position/size
-	this.x = 100;
-	this.y = 30;
-	this.width = 20;
-	this.height = 20;
+	let x = 100;
+	let y = 30;
+	let w = 20;
+	let h = 20;
 
 	this.draw = function(){
         // draw next track icon
         fill('#ff6600');
-        triangle(this.x, this.y, 
-                 this.x + this.width, this.y + this.height/2, 
-                 this.x, this.y+this.height);
-        rect(this.x + this.width, this.y, this.width/2 - 2, this.height);
+        triangle(x, y, 
+                 x + w, y + h/2, 
+                 x, y+h);
+        rect(x + w, y, w/2 - 2, h);
         noFill();
 	};
 
-	// checks for clicks on the button, starts next track.
+	// checks for clicks on the button, starts next track
 	this.hitCheck = function(){
-		if(mouseX > this.x && mouseX < this.x + this.width + this.width/2 - 2 && 
-           mouseY > this.y && mouseY < this.y + this.height){
-            this.playNextSong();
+		if(mouseX > x && mouseX < x + w + w/2 - 2 && 
+           mouseY > y && mouseY < y + h){
+            this.skipToNextSong();
         }
 	};
 
-    this.playNextSong = function(){ 
+    this.skipToNextSong = function(){ 
         if (sound[songNdx].isPlaying()) {
             // stop current song and change song index
-            this.stopAndChangeNdx();
+            stopAndChangeNdx();
                 
             // play song
             sound[songNdx].play();
         }else{
             // stop current song and change song index
-            this.stopAndChangeNdx();
+            stopAndChangeNdx();
             
             // reset currentTime for controlsAndInput.js
             controls.currentTimeCache = 0;
         }
     }
     
-    this.stopAndChangeNdx = function(){
+    let stopAndChangeNdx = function(){
         // stop current song
         sound[songNdx].stop();
 

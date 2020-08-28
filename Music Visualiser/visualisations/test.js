@@ -1,11 +1,3 @@
-/*
-
-- One dot moving from top to bottom of the screen
-
-- Dot Constructor
-
-*/
-
 function Test() {
     // name of the visualisation
     this.name = "Test";
@@ -98,7 +90,6 @@ function Test() {
                 rect(i * canvasX, j * canvasY, rectSize, rectSize);    
             }
         }
-
         pop();
     }
 }

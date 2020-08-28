@@ -29,21 +29,19 @@ function Pinwheel() {
         noStroke();
         
         // periodically set background color to a random color
-        if(frameCount % 100 == floor(amp))
-            {
-                r = random(0,255);
-                g = random(0,255);
-                b = random(0,255);
-            }
+        if(frameCount % 100 == floor(amp)){
+            r = random(0,255);
+            g = random(0,255);
+            b = random(0,255);
+        }
         background(r, g, b);         
 
         // periodically map amplitude
-        if(frameCount % 50 == 0)
-            {
-                 amp = map(amplitude.getLevel(), 
-                       0, 1, 
-                       1, height);
-            }
+        if(frameCount % 50 == 0){
+             amp = map(amplitude.getLevel(), 
+                   0, 1, 
+                   1, height);
+        }
 
         // add current amplitude to beginning of the array
         amps.unshift(amp);

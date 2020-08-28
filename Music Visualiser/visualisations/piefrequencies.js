@@ -27,12 +27,11 @@ function PieFrequencies() {
 
     // draw pie chart divided into four slices
     // proportional to the current bass, lowMid, highMid, treble 
-    this.drawPieChart = function(factor) {
+    let drawPieChart = function(factor) {
         // angle to start each of the four arcs
         let lastAngle = 0;
 
         for (let i = 0; i < angles.length; i++) {
-
             // assign a different frequency (bass, lowMid, highMid, treble)
             // to each quarter of the pie chart 
             let freq;
@@ -59,10 +58,10 @@ function PieFrequencies() {
             arc(
               width / 2,
               height / 2,
-              freq * factor,
-              freq * factor,
-              lastAngle,
-              lastAngle + radians(angles[i]));
+              freq * factor, // width of the arc's ellipse
+              freq * factor, // height of the arc's ellipse
+              lastAngle, // angle to start the arc, specified in radians
+              lastAngle + radians(angles[i])); // angle to stop the arc, specified in radians
 
             // get angle to start the arc of the next arc
             lastAngle += radians(angles[i]);
@@ -96,9 +95,9 @@ function PieFrequencies() {
         angles[2] = h * sum;
         angles[3] = t * sum;
 
-        // draw 5 layers of pie charts
+        // draw 5 overlapping layers of pie charts
         for (let i = 5; i > 0; i--) {
-             this.drawPieChart(i);
+             drawPieChart(i);
         }
         
         pop();

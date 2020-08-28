@@ -84,8 +84,7 @@ function Gloop() {
         // populate array with new "droplet of gloop" object
         droplets.push(new Droplet(spawnPosX, spawnPosY));
 
-        for(let i = 0; i < droplets.length; i++){
-            
+        for(let i = 0; i < droplets.length; i++){  
             // change droplet's yPos, width, height, & color,
             // affected by amplitude
             droplets[i].yPos += droplets[i].speed * max(1, amp/10);

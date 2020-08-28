@@ -4,7 +4,7 @@ function ControlsAndInput(){
 	
 	this.menuDisplayed = true;
     // display menu at start even if mouse not hovering over it
-    this.displayMenuAtStart = true;
+    let displayMenuAtStart = true;
 
 	// buttons
 	this.playbackButton = new PlaybackButton();
@@ -18,17 +18,17 @@ function ControlsAndInput(){
     this.rangeSliders = new RangeSliders();
     
     // time display
-    this.timeDisplay = new TimeDisplay(); 
+    let timeDisplay = new TimeDisplay(); 
     
     // menu border
     let menuWidth = width; // scale w/ canvas size
     let menuHeight = 150; 
     
-    // visualisations text
+    // visualisations text position
     let visNameTextY = 20;
     let visTextY = 45;
     
-    // song title text
+    // song title text position
     let songTitleTextX = 20;
     let songTitleTextY = 20;
 
@@ -78,7 +78,7 @@ function ControlsAndInput(){
             volumeButton.draw();
 
             //////////////// Draw Time Display ////////////////
-            this.timeDisplay.draw();
+            timeDisplay.draw();
             
             //////////////// Song Title Text ////////////////
             text(songNdx + 1 + ": " + songName[songNdx], songTitleTextX, songTitleTextY);
@@ -95,14 +95,13 @@ function ControlsAndInput(){
         this.rangeSliders.draw();
 	}
 
-    //checks if cursor is hovering over menu & enables it.
+    //checks if cursor is hovering over menu & makes it visible.
 	this.mouseHoverCheck = function(){
-        if(mouseX > 0 && mouseX < menuWidth && 
-           mouseY > 0 && mouseY < menuHeight){
-            this.displayMenuAtStart = false;
+        if(mouseY > 0 && mouseY < menuHeight){
+            displayMenuAtStart = false;
             this.menuDisplayed = true;
         }else{
-            if(!this.displayMenuAtStart){
+            if(!displayMenuAtStart){
                 this.menuDisplayed = false;
             }
         }   
@@ -110,7 +109,7 @@ function ControlsAndInput(){
     
     // click progress bar to change currentTime
     this.mouseClicked = function(){ 
-        this.timeDisplay.mouseClicked();
+        timeDisplay.mouseClicked();
 	}
 
 	//responds to keyboard presses
@@ -121,11 +120,6 @@ function ControlsAndInput(){
            this.playbackButton.playPause();
 		}
         
-        // mute/unmute sound
-        if(keyCode == 77){ // letter 'm' on the keyboard
-            volumeButton.muteUnmute();
-		}
-
         // select visualisation 
 		if(keyCode > 48 && keyCode < 57){ // numbers to 1 to 9
 			var visNumber = keycode - 49;
@@ -134,8 +128,24 @@ function ControlsAndInput(){
 			     vis.selectVisual(vis.visuals[visNumber].name); 
             }  
 		}
+        
+        // mute/unmute sound
+        if(keyCode == 77){ // letter 'm' on the keyboard
+            volumeButton.muteUnmute();
+		}
+
+        // skip to next song
+        if(keyCode == 78){ // letter 'n' on the keyboard
+            nextTrackButton.skipToNextSong();
+		}
+        
+        // skip to previous song
+        if(keyCode == 80){ // letter 'p' on the keyboard
+            previousTrackButton.skipToPreviousSong();
+		}
 	}
     
+    // scale w/ canvas size
     this.onResize = function(){
         menuWidth = width;
         

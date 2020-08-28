@@ -1,17 +1,14 @@
 /*
 TO BE COMPLETED:
 
-STATE:
-- Next Wave: Increase rate at which fleet moves AND shoots
-- Game Over if fleet reaches bottom of screen
-
 UI:
-- Provide user w/ INSTRUCTIONS: Move mouse to move player left or right, click to  fire a bullet
+- Provide user w/ INSTRUCTIONS: Move mouse to move ship left or right, click to fire a bullet, don't get shot!
 
 TUNE:
 - Enemy: Movement
 - Image Positions/Hit Detection
 
+IMPLEMENT:
 - Defense bunkers
 - Enemy Explosion and/or display points
 - Enemy: different points for different enemies?
@@ -24,21 +21,21 @@ When paused, if next/previous track button pressed, currentTime does not display
 Sources:
 Timer: https://editor.p5js.org/marynotari/sketches/S1T2ZTMp-
 
-*/
 
-/*
-8/24 
+8/28 
 COMPLETED:
--Created separate .js files for constructor functions (bullet, player, & intruders)
+- First pass at making sure as many variables as possible are declared with the “let” keyword in order to limit their scope.
 
--Added "aliens" variable in sketch.js to cache the AlienIntruders instance. 
- Allows constructor functions associated w/ the visualisation to easily access it. 
- 
--Added MysteryShip.js
- 
--For all constructors w/ update & draw functions, instead of calling both functions in AlienIntruders.js,
- the draw function is now called within update function.
- 
+- Alien Intruders: 
+  - Bullets: Limit collision check to certain areas of the canvas for optimization.
+  - Next Wave: Increase the speed at which fleet moves AND shoots
+  - Game Over if fleet reaches bottom of screen
+  - If instantiateBullets() in intruders.js does not find an active intruder, try again
+  
+Bug: Keyboard Input: mute doesn’t work when menu isn’t visible
+SOLUTION: Changed where masterVolume is set in rangeSliders.draw()
+
+  
 */
 
 function AlienIntruders(){
@@ -107,7 +104,6 @@ function AlienIntruders(){
         //////////////// Draw Stars ////////////////
         for(let i = 0; i < stars.length; i++){
             stars[i].update();
-            //stars[i].draw();
         }
         
         switch(this.gameState){
@@ -122,16 +118,8 @@ function AlienIntruders(){
                 break;
             case 1: //////////////// Gameplay ////////////////
  
-                // move the fleet
-                //this.intruders.moveIntruders();
-                
-                //////////////// Instantiate Enemy Bullets ////////////////
-                //this.intruders.instantiateBullets();
-                
                 //////////////// Draw Bullets ////////////////
-
                 for(let i = 0; i < this.bullets.length; i++){
-
                     this.bullets[i].update();
                     
                     try{
@@ -224,7 +212,6 @@ function AlienIntruders(){
         }
 
         //////////////// Draw Intruders ////////////////
-        //this.intruders.draw();
         this.intruders.update();
 
         //////////////// Draw Player Ship ////////////////
@@ -248,7 +235,7 @@ function AlienIntruders(){
     this.mouseClicked = function(){
         switch(this.gameState){
             case 0: 
-                 //start gameplay button
+                //start gameplay button
                 if(mouseX > menuButtonX && 
                    mouseX < menuButtonX + MENU_BUTTON_W && 
                    mouseY > menuButtonY && 
@@ -257,7 +244,7 @@ function AlienIntruders(){
                 }  
                 break;
             case 1:
-                    this.bullets.push(new Bullet(mouseX, this.player.yPos, 0, 255, true));
+                this.bullets.push(new Bullet(mouseX, this.player.yPos, 0, 255, true));
                 break;
         }
 	}
@@ -274,6 +261,7 @@ function AlienIntruders(){
         this.intruders.initialize();
     }
     
+    // scale w/ canvas size
     this.onResize = function(){
         this.player.onResize();
         

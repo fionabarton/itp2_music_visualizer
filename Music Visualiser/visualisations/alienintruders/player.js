@@ -43,7 +43,7 @@ function Player (){
 
                 noFill();
 
-                // player ship follows mouseX
+                // player ship follows mouseX position
                 this.xPos = mouseX - this.width / 2;
                 break;
             case 2:
@@ -68,6 +68,7 @@ function Player (){
         }
     }
     
+    // scale w/ canvas size
     this.onResize = function(){
         this.yPos = height/1.2;
     }

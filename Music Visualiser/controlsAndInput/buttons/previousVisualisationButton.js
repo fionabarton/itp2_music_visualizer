@@ -1,24 +1,24 @@
 // displays and handles clicks on the previous visualisation button.
 function PreviousVisualsationButton(){
 	// variables for button position/size
-    this.x = (width/2) - 50; // scale w/ canvas size
-	this.y = 30;
-	this.width = 20;
-	this.height = 20;
+    let x = (width/2) - 50; // scale w/ canvas size
+	let y = 30;
+	let w = 20;
+	let h = 20;
 
 	this.draw = function(){
         // draw previous visualisation icon
         fill('#0085ff');
-        triangle(this.x + this.width, this.y, 
-                 this.x, this.y + this.height/2, 
-                 this.x + this.width, this.y+this.height);
+        triangle(x + w, y, 
+                 x, y + h/2, 
+                 x + w, y+h);
         noFill();
 	}
 
 	// checks for clicks on the button, starts previous visualisation.
 	this.hitCheck = function(){
-		if(mouseX > this.x && mouseX < this.x + this.width && 
-           mouseY > this.y && mouseY < this.y + this.height){
+		if(mouseX > x && mouseX < x + w && 
+           mouseY > y && mouseY < y + h){
             
             // change visualisation index
             if(visNdx > 0){
@@ -31,7 +31,8 @@ function PreviousVisualsationButton(){
         }
 	}
     
+    // scale w/ canvas size
     this.onResize = function(){
-        this.x = (width/2) - 50;
+        x = (width/2) - 50;
     }
 }

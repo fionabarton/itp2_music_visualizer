@@ -1,10 +1,6 @@
 /*
-Source:
-Brownian Motion: https://p5js.org/examples/simulate-brownian-motion.html
-
 Description:
 Dynamically draws four lines that are affected by the bass, low mid, high mid, and treble.
-
 */
 
 function Scribbles() {
@@ -46,9 +42,6 @@ function Scribbles() {
     this.draw = function() {
         push();
 
-        // map amplitude
-        amp = map(amplitude.getLevel(), 0, 1, 0, 10); 
-        
         // get frequencies
         fourier.analyze();
         b = fourier.getEnergy("bass");
@@ -56,7 +49,10 @@ function Scribbles() {
         h = fourier.getEnergy("highMid");
         t = fourier.getEnergy("treble");
         
-        // gradually change background color, affected by current amplitude
+        // map amplitude
+        amp = map(amplitude.getLevel(), 0, 1, 0, 10); 
+        
+        // gradually change background color, speed at which it changes affected by current amplitude
         if(upOrDown){
             // increase background color value
             backgroundColor += amp;
@@ -67,7 +63,7 @@ function Scribbles() {
             }
         }else{
             // decrease background color value
-            backgroundColor -= amp;  
+            backgroundColor -= amp; 
             
             // if reached min value, increase value instead
             if(backgroundColor <= 0){
@@ -118,9 +114,10 @@ function Scribbles() {
 
                 // draw lines
                 stroke(scribbles[i].color);
-                strokeWeight(max(2, freq/100));
-                line(scribbles[i].pointX[j - 1], scribbles[i].pointY[j - 1], 
-                     scribbles[i].pointX[j], scribbles[i].pointY[j]);  
+                strokeWeight(max(2, freq/10));
+                line(scribbles[i].pointX[j], scribbles[i].pointY[j], 
+                     scribbles[i].pointX[j - 1], scribbles[i].pointY[j - 1]
+                     );  
 
                 // remove 1st element from arrays
                 if(j >= 500){
